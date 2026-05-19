@@ -1,3 +1,10 @@
+## Fork Info
+
+This is forked from [crazy-max/docker-flarum](https://github.com/crazy-max/docker-flarum).
+I only created this to assist a friend in testing out flarum v2.x beta with PHP8.4. It is not intended to be production quality and is only changed from the upstream repository insofar as to assist in my friend's testing. Please do not use this in production without appropriate changes.
+
+## Original README.md follows
+
 <p align="center"><a href="https://github.com/crazy-max/docker-flarum" target="_blank"><img height="128" src="https://raw.githubusercontent.com/crazy-max/docker-flarum/master/.github/docker-flarum.jpg"></a></p>
 
 <p align="center">
