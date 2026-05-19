@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
-ARG FLARUM_VERSION=v1.8.10
+ARG FLARUM_VERSION=v2.0.0-rc.1
+# NOTE: FLARUM_PROJECT_VERSION exists separately from FLARUM_VERSION because the composer project was not updated for rc.1. As such, we have to use beta.8 as well, thus the additional variable. Presumably in the future there will be a stable release with matching versions and this variable can go away.
+ARG FLARUM_PROJECT_VERSION=v2.0.0-beta.8
 ARG ALPINE_VERSION=3.22
 
 FROM tianon/gosu:latest AS gosu
@@ -53,10 +55,12 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS="2"\
   PGID="1000"
 
 ARG FLARUM_VERSION
+ARG FLARUM_PROJECT_VERSION
+
 RUN mkdir -p /opt/flarum \
   && curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
-  && COMPOSER_CACHE_DIR="/tmp" composer create-project flarum/flarum /opt/flarum --no-install \
-  && COMPOSER_CACHE_DIR="/tmp" composer require --working-dir /opt/flarum flarum/core:${FLARUM_VERSION} \
+  && COMPOSER_CACHE_DIR="/tmp" composer create-project flarum/flarum:${FLARUM_PROJECT_VERSION} /opt/flarum --no-install \
+  && COMPOSER_CACHE_DIR="/tmp" composer require --working-dir /opt/flarum -W flarum/core:${FLARUM_VERSION} \
   && composer clear-cache \
   && addgroup -g ${PGID} flarum \
   && adduser -D -h /opt/flarum -u ${PUID} -G flarum -s /bin/sh -D flarum \
