@@ -30,6 +30,7 @@ RUN apk --update --no-cache add \
     php84-intl \
     php84-json \
     php84-mbstring \
+    php84-mysqli \
     php84-opcache \
     php84-openssl \
     php84-pdo \
@@ -62,6 +63,9 @@ RUN mkdir -p /opt/flarum \
   && curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
   && COMPOSER_CACHE_DIR="/tmp" composer create-project flarum/flarum:${FLARUM_PROJECT_VERSION} /opt/flarum --no-install \
   && COMPOSER_CACHE_DIR="/tmp" composer require --working-dir /opt/flarum -W flarum/core:${FLARUM_VERSION} \
+  && COMPOSER_CACHE_DIR="/tmp" composer require --working-dir /opt/flarum fof/polls:"*" \
+  && COMPOSER_CACHE_DIR="/tmp" composer require --working-dir /opt/flarum fof/reactions:"*" \
+  && COMPOSER_CACHE_DIR="/tmp" composer require --working-dir /opt/flarum michaelbelgium/mybb-to-flarum \
   && composer clear-cache \
   && addgroup -g ${PGID} flarum \
   && adduser -D -h /opt/flarum -u ${PUID} -G flarum -s /bin/sh -D flarum \
